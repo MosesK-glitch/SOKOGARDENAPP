@@ -1,4 +1,5 @@
 import React from 'react'
+import Loader from './loader';
 
 const Addproducts = () => {
 
@@ -12,11 +13,59 @@ const Addproducts = () => {
   const [loading, setLoading] = useState('');
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
+
+  // create a function that will handle the submit action of the form
+  const handleSubmit = async (e) => {
+    // Below we prevent the default action of the form which is to refresh the page
+    e.preventDefault();
+    // Update our loading hook with a message that will be displayed to the users who are trying to add products
+    setLoading(true);
+
+      try {
+        // create a form data object to hold the data that we want to send to the backend
+        const formData = new FormData();
+
+        //  append the four details(product_name,product_description,product_price,product_photo) into the form data object
+        formData.append("product_name", product_name);
+        formData.append("product_description", product_description);
+        formData.append("product_price", product_price);
+        formData.append("product_photo", product_photo);
+        // interact with the backend using axios and the post method
+        const response = await axios.post("http://munyorikariuki.alwaysdata.net/api/add_product", formData);  
+
+        // set the loading hook to default
+        setLoading(false);
+        
+        setSuccess(response.data.message);
+        // clear the hooks
+        setProductName('');
+        setProductDescription('');
+        setProductPrice('');
+        setProductPhoto('');
+        event.target.reset();
+
+        setTimeout(() => {
+          setSuccess("");
+        }, 5000);
+
+      } 
+      catch (error) {
+        console.error("Error adding product:", error);
+        setError("Failed to add product. Please try again.");
+      } 
+      finally {
+        setLoading(false);
+      }
+    
+  }
   return (
     <div className='row justify-content-center mt-4'>
       <div className="card col-md-6 shadow p-4"><h3 className='text-primary'>Add Products</h3>
 
-      <form>
+      {/* bind the loading hook */}
+      {loading && <Loader/>}
+
+      <form onSubmit={handleSubmit}>
         <input type="text" placeholder='Enter the Product Name' className='form-control' required value={product_name} onChange={(e) => setProductName(e.target.value)} /> <br />
 
         {/* {product_name} */}
