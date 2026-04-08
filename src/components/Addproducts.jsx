@@ -1,5 +1,8 @@
 import React from 'react'
 import Loader from './loader';
+import { useState } from 'react';
+import axios from 'axios';
+
 
 const Addproducts = () => {
 
@@ -42,7 +45,7 @@ const Addproducts = () => {
         setProductDescription('');
         setProductPrice('');
         setProductPhoto('');
-        event.target.reset();
+        e.target.reset();
 
         setTimeout(() => {
           setSuccess("");
@@ -50,12 +53,12 @@ const Addproducts = () => {
 
       } 
       catch (error) {
-        console.error("Error adding product:", error);
-        setError("Failed to add product. Please try again.");
-      } 
-      finally {
+        // set the loading hook to default
         setLoading(false);
-      }
+
+        // updtae the error hook with the error message that we will get from the backend
+        setError(error.response.data.message);
+      } 
     
   }
   return (
@@ -63,7 +66,11 @@ const Addproducts = () => {
       <div className="card col-md-6 shadow p-4"><h3 className='text-primary'>Add Products</h3>
 
       {/* bind the loading hook */}
+
       {loading && <Loader/>}
+
+      {success && <h3 className='text-success'>{success}</h3>}
+      {error && <h3 className='text-danger'>{error}</h3>}
 
       <form onSubmit={handleSubmit}>
         <input type="text" placeholder='Enter the Product Name' className='form-control' required value={product_name} onChange={(e) => setProductName(e.target.value)} /> <br />

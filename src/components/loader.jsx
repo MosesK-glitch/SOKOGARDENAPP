@@ -1,5 +1,8 @@
 import React from 'react'
-import "./stylings/Loader.css"; // Impoort the external css 
+import { useState } from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import "../css/Loader.css"; // Impoort the external css 
 const Loader = () => {
   return (
     <section className='loader'>
