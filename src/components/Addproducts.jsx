@@ -2,6 +2,7 @@ import React from 'react'
 import Loader from './loader';
 import { useState } from 'react';
 import axios from 'axios';
+import { useRef } from 'react';
 
 
 const Addproducts = () => {
@@ -47,6 +48,9 @@ const Addproducts = () => {
         setProductPhoto('');
         e.target.reset();
 
+        // clearing the file input value
+        e.target.reset();
+
         setTimeout(() => {
           setSuccess("");
         }, 5000);
@@ -86,7 +90,11 @@ const Addproducts = () => {
         {/* {product_price} */}
 
         <label className='text-primary'>Product Photo</label>
-        <input type="file" className='form-control' required value={product_photo} onChange={(e) => setProductPhoto(e.target.value)} /> <br />
+        <input type="file" className='form-control' required value={product_photo} accept='image/*' 
+        />
+         onChange={(e) => setProductPhoto(e.target.value)} <br />
+
+        
 
         {/* {product_photo} */}
 
